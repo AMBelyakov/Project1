@@ -4,16 +4,16 @@ operation=input('Operation:')
 
 result=None
 
-if operation=='+'
+if operation=='+':
     result=x+y
-elif operation == '-'
+elif operation == '-':
     result = x - y
-elif operation == '*'
+elif operation == '*':
     result = x * y
-elif operation == '/'
+elif operation == '/':
     result = x / y
 else:
     print('Unsupported operation')
-if result is not None
+if result is not None:
     print('Result:',result)
 
