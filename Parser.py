@@ -13,12 +13,12 @@ def delayed_action(hours,minutes):                                              
 
     except  OverflowError:
         print('Неправильный ввод')
-def long_delayed_action(years,months,days):                                                                             #через n лет n месяцев n дней
+def long_delayed_action(years,months,days,n):                                                                             #через n лет n месяцев n дней
     delayed_year = int(find_delayed_year)
     delayed_month = int(find_delayed_month)
     delayed_day=int(find_delayed_day)
     try:
-        sec =delayed_month*30.5*3600+delayed_day*3600
+        sec =delayed_month*n*3600+delayed_day*3600
         if delayed_year:
             sec1=delayed_year*365*3600
             for _ in range (24):
@@ -28,73 +28,93 @@ def long_delayed_action(years,months,days):                                     
         time.sleep(seconds)
         print(out)
 
-    except  AttributeError:
+    except  OverflowError:
         print('Неправильный ввод')
 def main():
-    global day_intext, month_intext, year_intext, date_intext,date_intext_str,year,month,day,out,hour,minute,find_delayed_hour,find_delayed_minute,find_delayed_year, find_delayed_month,find_delayed_day,day_week
+    global day_intext, month_intext, year_intext, date_intext,date_intext_str,year,month,day,out,hour,minute\
+        ,find_delayed_hour,find_delayed_minute,find_delayed_year, find_delayed_month,find_delayed_day,day_week,n,\
+        string_month
 
-    receive=input('Введите событие:')
-
-    all_objects=receive.split()                                                                                         #деление на подсторки
+    receive = input('Введите событие:')
+    all_objects = receive.split()  # деление на подсторки
     print(all_objects)
 
-    if ('в понедельник' or 'каждый понедельник' or 'понедельник' or'Понедельник' or 'по понедельникам') in receive:     # поиск дня недели
-        day_week = 'Monday'
+    Mondays=['в понедельник','каждый понедельник' , 'понедельник' ,'Понедельник' , 'по понедельникам' ,'понедельник']
+    Tuesdays=['во вторник' , 'каждый вторник' , 'вторник' , 'Вторник' , 'по вторникам']
+    Wendsdays=['в среду' , 'каждую среду' , 'среда' , 'Среда' , 'по средам' , 'среду']
+    Thursdays=['в четверг' , 'каждый четверг' , 'четверг' , 'Четверг' , 'по четвергам']
+    Fridays=['в пятницу' , 'каждую пятницу' , 'пятница' , 'Пятница' , 'по пятницам']
+    Saturdays=['в субботу' , 'каждую субботу' , 'суббота' , 'Суббота' , 'по субботам']
+    Sundays=['в воскресенье' , 'каждое воскресенье' , 'воскресенье' , 'Воскресенье' , 'по воскресеньям']
 
-    if ('во вторник' or 'каждый вторник' or 'вторник' or 'Вторник' or 'по вторникам') in receive:
-        day_week = 'Tuestday'
+    Septembers=['сентябрь' , 'сентября']
+    Octobers=['октябрь' , 'октября']
+    Novembers=['ноябрь' , 'ноября']
+    Decembers=['декабрь' , 'декабря']
+    Januarys=['январь' , 'января']
+    Februarys=['февраль' , 'февраля']
+    Marchs=['март' , 'марта']
+    Aprils=['апрель' , 'апреля']
+    Mays=['май' , 'мая']
+    Junes=['июнь' , 'июня']
+    Julys=['июль' , 'июля']
+    Augusts=['август' , 'августа']
 
-    if ('в среду' or 'каждую среду' or 'среда' or 'Среда' or 'по средам') in receive:
-        day_week = 'Wednsday'
 
-    if ('в четверг' or 'каждый четверг' or 'четверг' or 'Четверг' or 'по четвергам') in receive:
-        day_week = 'Thursday'
 
-    if ('в пятницу' or 'каждую пятницу' or 'пятница' or 'Пятница' or 'по пятницам') in receive:
-        day_week = 'Friday'
+    for i in range(len(all_objects)):                                                                                   #поиск дня недели
+        if all_objects[i] in Mondays:
+            day_week='Monday'
+        elif all_objects[i] in Tuesdays:
+            day_week='Tuesday'
+        elif all_objects[i] in Wendsdays:
+            day_week='Wendsday'
+        elif  all_objects[i] in Thursdays:
+            day_week='Thursday'
+        elif all_objects[i] in Fridays:
+            day_week='Friday'
+        elif  all_objects[i] in Saturdays:
+            day_week='Saturday'
+        elif  all_objects[i] in Sundays:
+            day_week='Sunday'
 
-    if ('в субботу' or 'каждую субботу' or 'суббота' or 'Суббота' or 'по субботам') in receive:
-        day_week = 'Saturday'
-
-    if ('в воскресенье' or 'каждое воскресенье' or 'воскресенье' or 'Воскресенье' or 'по воскресеньям') in receive:
-        day_week = 'Sunday'
-
-    if 'январь' or 'января' in receive:
-        month = '01'
-        n = 31
-    elif 'февраль' or 'февраля' in receive:
-        month = '02'
-        n = 28
-    elif 'март' or 'марта' in receive:
-        month = '03'
-        n = 31
-    elif 'апрель' or 'апреля' in receive:
-        month = '04'
-        n = 30
-    elif 'май' or 'мая' in receive:
-        month = '05'
-        n = 31
-    elif 'июнь' or 'июня' in receive:
-        month = '06'
-        n = 30
-    elif 'июль' or 'июля' in receive:
-        month = '07'
-        n = 31
-    elif 'август' or 'августа' in receive:
-        month = '08'
-        n = 31
-    elif 'сентябрь' or 'сентября' in receive:
-        month = '09'
-        n = 30
-    elif 'октябрь' or 'октября' in receive:
-        month = '10'
-        n = 31
-    elif 'ноябрь' or 'ноября' in receive:
-        month = '11'
-        n = 30
-    elif 'декабрь' or 'декабря' in receive:
-        month = '12'
-        n = 31
+    for k in range(len(all_objects)):                                                                                   #поиск месяца
+        if all_objects[k] in Januarys:
+            string_month = '01'
+            n = 31
+        elif all_objects[k] in Februarys:
+            string_month = '02'
+            n = 28
+        elif all_objects[k] in Marchs:
+            string_month = '03'
+            n = 31
+        elif all_objects[k] in Aprils:
+            string_month = '04'
+            n = 30
+        elif all_objects[k] in Mays:
+            string_month = '05'
+            n = 31
+        elif all_objects[k] in Junes:
+            string_month = '06'
+            n = 30
+        elif all_objects[k] in Julys:
+            string_month = '07'
+            n = 31
+        elif all_objects[k] in  Augusts:
+            string_month = '08'
+            n = 31
+        elif all_objects[k] in Septembers:
+            string_month = '09'
+            n = 30
+        elif all_objects[k] in Octobers:
+            string_month = '10'
+            n = 31
+        elif all_objects[k] in Novembers:
+             string_month = '11'
+             n = 30
+        elif all_objects[k] in Decembers:
+            string_month = '12'
+            n = 31
 
     current_date = datetime.now()                                                                                       #текущие: month day year hour minute
     current_date_string = current_date.strftime('%m/%d/%y %H:%M:%S')                                                    #hour и minute далее
@@ -167,15 +187,13 @@ def main():
 
     match_find_delay_minute=re.findall('минут',receive)
     match_find_delay_hour = re.findall('час', receive)
+
     if match_find_delay_minute or match_find_delay_hour or(match_find_delay_minute and match_find_delay_hour):
         try:
             #for index in range(len(all_objects)):
                 index=0
                 if all_objects[index]=='Через' or all_objects[index]=='через':
                     print(all_objects[index])
-
-
-
                 if 0<=int(all_objects[index+1])<60 and (all_objects[index+2]=='минуту'or  all_objects[index+2]=='минуты'
                    or all_objects[index+2]=='минут'):
                     find_delayed_minute=all_objects[index+1]
@@ -205,6 +223,7 @@ def main():
     match_find_delay_day=re.search('ден',receive)
     match_find_delay_month = re.search('месяц', receive)
     match_find_delay_year=re.search('год',receive)
+
     if match_find_delay_day or match_find_delay_month or match_find_delay_year or (match_find_delay_day and match_find_delay_month) or (match_find_delay_day and match_find_delay_year ) or (match_find_delay_month and match_find_delay_year):
         try:
             #for index in range(len(all_objects)):
@@ -251,20 +270,34 @@ def main():
             print('Необходимо ввести в формате: Через (число) лет (число) месяцев (число) дней ')
 
         else:
-            long_delayed_action(find_delayed_year, find_delayed_month,find_delayed_day,)
+            long_delayed_action(find_delayed_year, find_delayed_month,find_delayed_day,n)
 
-
-
-
-    if year and month and day and hour and minute and out:                                                              #самый конец
+    if year and hour and minute and out:                                                                      #самый конец
         status='SUCCESS'
-        print("Message:{","'STATUS':",status,",","'DATE':{'year':",year,",","'month':",month,",","'day':",day,",","'hour':",hour,",","'minute':",minute,"}",",","'TEXT':", out,"}",sep='')
-        #if day_week:
-        #    day=day_week
-        #    print("Message:{", "'STATUS':", status, ",", "'DATE':{'year':", year, ",", "'month':", month, ",", "'day':",
-        #          day, ",", "'hour':", hour, ",", "'minute':", minute, "}", ",", "'TEXT':", out, "}", sep='')
+        day_out=''
+        month_out=''
+
+        try:
+            if day_week:
+                day_out=day_week
+            elif day:
+                day_out=day
+
+        except NameError:
+            day_week=None
+
+        try:
+            if string_month:
+                month_out=string_month
+            elif month:
+                month_out=month
+            print(month_out)
+        except NameError:
+            string_month=None
+        print("Message:{","'STATUS':",status,",","'DATE':{'year':",year,",","'month':",month_out,",","'day':",day_out,",","'hour':",hour,",","'minute':",minute,"}",",","'TEXT':", out,"}",sep='')
+
     else:
-        status='ERROR'
+        status='FAILURE'
         print('Ошибка',status)
 
 if __name__ == '__main__':
