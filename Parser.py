@@ -1,6 +1,7 @@
-import re                                                                                                               #regular expressions
-from datetime import datetime
+import re  # regular expressions
 import time
+from datetime import datetime
+
 
 def delayed_action(hours,minutes):                                                                                      #через n часов n минут
     delayed_minute = int(find_delayed_minute)
@@ -13,22 +14,28 @@ def delayed_action(hours,minutes):                                              
 
     except  OverflowError:
         print('Неправильный ввод')
-def long_delayed_action(years,months,days,n):                                                                             #через n лет n месяцев n дней
+def long_delayed_action(years,months,days,Year,Month,Day,Hour,Minute):                                                  #через n лет n месяцев n дней
     delayed_year = int(find_delayed_year)
     delayed_month = int(find_delayed_month)
     delayed_day=int(find_delayed_day)
     try:
-        sec =delayed_month*n*3600+delayed_day*3600
-        if delayed_year:
-            sec1=delayed_year*365*3600
-            for _ in range (24):
-                seconds1=float(sec1)
-                time.sleep(seconds1)
-        seconds = float(sec)
-        time.sleep(seconds)
+        dt1 = datetime(Year,Month, Day, Hour, Minute)
+        dt2 = datetime(Year+delayed_year, Month+delayed_month, Day+delayed_day, Hour, Minute)
+        tdelta = dt2 - dt1
+        tdelta_string=str(tdelta)
+        print(str(tdelta))
+        tdelta_objects=tdelta_string.split()
+        print(tdelta_objects)
+        days_tosec=tdelta_objects[0]
+        print(days_tosec)
+        sec =days_tosec*86400
+        seconds = int(sec)
+        for a in range(0,seconds,4800):
+            time.sleep(4800)
         print(out)
 
     except  OverflowError:
+        pass
         print('Неправильный ввод')
 def main():
     global day_intext, month_intext, year_intext, date_intext,date_intext_str,year,month,day,out,hour,minute\
@@ -190,24 +197,26 @@ def main():
 
     if match_find_delay_minute or match_find_delay_hour or(match_find_delay_minute and match_find_delay_hour):
         try:
-            #for index in range(len(all_objects)):
-                index=0
-                if all_objects[index]=='Через' or all_objects[index]=='через':
-                    print(all_objects[index])
-                if 0<=int(all_objects[index+1])<60 and (all_objects[index+2]=='минуту'or  all_objects[index+2]=='минуты'
+                if 'через' in all_objects:
+                    index=all_objects.index('через')
+                elif 'Через' in all_objects:
+                    index=all_objects.index('Через')
+                else:
+                    raise ValueError ('Try again')
+                if (all_objects[index]=='Через' or all_objects[index]=='через') and 0<=int(all_objects[index+1])<60 and (all_objects[index+2]=='минуту'or  all_objects[index+2]=='минуты'
                    or all_objects[index+2]=='минут'):
                     find_delayed_minute=all_objects[index+1]
                     find_delayed_hour=0
                     print('Через',find_delayed_hour,'час','через',find_delayed_minute,'минут')
 
-                if 0<=int(all_objects[index+1])<24 and (all_objects[index+2]=='час'or  all_objects[index+2]=='часа' or
+                if (all_objects[index]=='Через' or all_objects[index]=='через') and 0<=int(all_objects[index+1])<24 and (all_objects[index+2]=='час'or  all_objects[index+2]=='часа' or
                    all_objects[index+2]=='часов'):
                     find_delayed_minute = 0
                     find_delayed_hour= all_objects[index + 1]
                     print('Через',find_delayed_hour,'часов','через',find_delayed_minute,'минут')
 
                 if len(all_objects)==5:
-                    if 0<=int(all_objects[index+1])<24 and (all_objects[index+2]=='час'or  all_objects[index+2]=='часа' or
+                    if (all_objects[index]=='Через' or all_objects[index]=='через') and 0<=int(all_objects[index+1])<24 and (all_objects[index+2]=='час'or  all_objects[index+2]=='часа' or
                     all_objects[index+2]=='часов') and 0<=int(all_objects[index+3])<60 and (all_objects[index+4]=='минуту'
                     or all_objects[index+4]=='минуты' or all_objects[index+4]=='минут'):
                         find_delayed_hour = all_objects[index + 1]
@@ -226,26 +235,27 @@ def main():
 
     if match_find_delay_day or match_find_delay_month or match_find_delay_year or (match_find_delay_day and match_find_delay_month) or (match_find_delay_day and match_find_delay_year ) or (match_find_delay_month and match_find_delay_year):
         try:
-            #for index in range(len(all_objects)):
-                index=0
-                if all_objects[index] == 'Через' or all_objects[index] == 'через':
-                    print(all_objects[index])
-
-                if 0 <= int(all_objects[index + 1]) < 365 and (all_objects[index + 2] == 'день' or all_objects[index + 2] == 'дня'
+                if 'через' in all_objects:
+                    index = all_objects.index('через')
+                elif 'Через' in all_objects:
+                    index = all_objects.index('Через')
+                else:
+                    raise ValueError ('Try again')
+                if  (all_objects[index] == 'Через' or all_objects[index] == 'через') and 0 <= int(all_objects[index + 1]) < 365 and (all_objects[index + 2] == 'день' or all_objects[index + 2] == 'дня'
                         or all_objects[index + 2] == 'дней'):
                     find_delayed_year=0
                     find_delayed_month = 0
                     find_delayed_day = all_objects[index + 1]
                     print('Через', find_delayed_year, 'лет', 'через', find_delayed_month, 'месяцев','через',find_delayed_day,'дней')
 
-                if 0 <= int(all_objects[index + 1]) < 12 and (all_objects[index + 2] == 'месяц' or all_objects[index + 2] == 'месяца' or
+                if (all_objects[index] == 'Через' or all_objects[index] == 'через') and 0 <= int(all_objects[index + 1]) < 12 and (all_objects[index + 2] == 'месяц' or all_objects[index + 2] == 'месяца' or
                         all_objects[index + 2] == 'месяцев'):
                     find_delayed_year = 0
                     find_delayed_month = all_objects[index + 1]
                     find_delayed_day = 0
                     print('Через', find_delayed_year, 'лет', 'через', find_delayed_month, 'месяцев', 'через', find_delayed_day, 'дней')
 
-                if 0 <= int(all_objects[index + 1]) < 101 and (
+                if (all_objects[index] == 'Через' or all_objects[index] == 'через') and 0 <= int(all_objects[index + 1]) < 101 and (
                         all_objects[index + 2] == 'год' or all_objects[index + 2] == 'года' or
                         all_objects[index + 2] == 'лет'):
                     find_delayed_year = all_objects[index + 1]
@@ -255,7 +265,7 @@ def main():
                     'дней')
 
                 if len(all_objects)==7:
-                    if 0 <= int(all_objects[index + 1]) < 101 and (all_objects[index + 2] == 'год' or all_objects[index + 2] == 'года' or
+                    if (all_objects[index] == 'Через' or all_objects[index] == 'через') and 0 <= int(all_objects[index + 1]) < 101 and (all_objects[index + 2] == 'год' or all_objects[index + 2] == 'года' or
                         all_objects[index + 2] == 'лет') and 0 <= int(
                         all_objects[index + 3]) < 12 and (all_objects[index + 4] == 'месяц'
                         or all_objects[index + 4] == 'месяца' or all_objects[index + 4] == 'месяцев') and \
@@ -270,9 +280,9 @@ def main():
             print('Необходимо ввести в формате: Через (число) лет (число) месяцев (число) дней ')
 
         else:
-            long_delayed_action(find_delayed_year, find_delayed_month,find_delayed_day,n)
+            long_delayed_action(find_delayed_year, find_delayed_month,find_delayed_day,Year,Month,Day,Hour,Minute)
 
-    if year and hour and minute and out:                                                                      #самый конец
+    if year and hour and minute and out:                                                                                #самый конец
         status='SUCCESS'
         day_out=''
         month_out=''
@@ -280,20 +290,42 @@ def main():
         try:
             if day_week:
                 day_out=day_week
+                month_out=month
+
             elif day:
                 day_out=day
+                month_out=month
 
         except NameError:
             day_week=None
+        else:
+            print(day_out)
 
         try:
             if string_month:
+                day_out=day
                 month_out=string_month
             elif month:
+                day_out=day
                 month_out=month
-            print(month_out)
         except NameError:
             string_month=None
+        else:
+            print(month_out)
+
+        try:
+            if string_month and day_week:
+                day_out=day_week
+                month_out=string_month
+            elif month:
+                day_out=day
+                month_out=month
+        except NameError:
+            string_month=None
+            day_week=None
+        else:
+            print(month_out)
+            print(day_week)
         print("Message:{","'STATUS':",status,",","'DATE':{'year':",year,",","'month':",month_out,",","'day':",day_out,",","'hour':",hour,",","'minute':",minute,"}",",","'TEXT':", out,"}",sep='')
 
     else:
